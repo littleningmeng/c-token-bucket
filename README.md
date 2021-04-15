@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
     token_bucket_take(tb, 1); // take 1 token per second
     printf("hello\n");
   }
+  token_bucket_destroy(tb);
   return 0;
 }
 ```
