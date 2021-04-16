@@ -24,17 +24,11 @@ bool token_bucket_try_take(token_bucket_t *tb, const size_t tokens) {
   if(min_time > old_time) {
     new_time = min_time;
   }
-  while(1) {
-    new_time += needs_time;
-    if(new_time > now) {
-      return false;
-    }
-    if(__sync_bool_compare_and_swap(&tb->last_take_time, old_time, new_time)) {
-      return true;
-    }
-    new_time = old_time;
+  new_time += needs_time;
+  if(new_time > now) {
+    return false;
   }
-  return false;
+  return __sync_bool_compare_and_swap(&tb->last_take_time, old_time, new_time);
 }
 
 void token_bucket_take(token_bucket_t *tb, const size_t tokens) {
