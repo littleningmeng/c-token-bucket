@@ -12,6 +12,7 @@ token_bucket_t *token_bucket_create(const uint64_t qps, const size_t size) {
   tb->last_take_time = 0;
   tb->unit_time = US_PER_SECOND / qps;
   tb->burst_unit_time = size * tb->unit_time;
+  return tb;
 }
 
 bool token_bucket_try_take(token_bucket_t *tb, const size_t tokens) {
